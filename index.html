@@ -1,0 +1,294 @@
+Dưới đây là toàn bộ mã nguồn hoàn chỉnh của trang web Tree English bao gồm giao diện đăng nhập, khu vực bài tập về nhà, đường đua trà sữa tương tác và phần ôn tập tự nguyện dựa trên các hình ảnh mẫu bạn cung cấp.
+Bạn có thể copy đoạn mã này, lưu thành một file có tên index.html và mở bằng trình duyệt web để chạy:
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree English - Khu vực học sinh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f4f8fb; }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- MÀN HÌNH ĐĂNG NHẬP (MẪU 1) -->
+    <div id="login-screen" class="flex-1 flex flex-col items-center justify-center p-4">
+        <div class="text-center max-w-md w-full">
+            <!-- Logo Mầm Cây -->
+            <div class="flex flex-col items-center mb-6">
+                <div class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mb-2 shadow-sm">
+                    <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                </div>
+                <span class="text-xs font-bold tracking-widest text-slate-400 uppercase">Tree English</span>
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Khu vực học sinh</h1>
+            <p class="text-sm text-slate-500 mb-8 px-4">Nhập mã lớp của bạn để truy cập bài tập, đường đua trà sữa và khu vực tự luyện.</p>
+
+            <!-- Khung nhập mã -->
+            <div class="bg-white p-6 rounded-2xl shadow-xl shadow-slate-100 border border-slate-100 text-left mb-6">
+                <label class="block text-sm font-semibold text-slate-700 mb-1">
+                    🎓 Bạn đang học lớp nào?
+                </label>
+                <p class="text-xs text-slate-400 mb-4">Mỗi học sinh chỉ cần nhập mã lớp do giáo viên cung cấp.</p>
+                
+                <input type="text" id="class-code-input" placeholder="Ví dụ: TREE01" 
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 focus:bg-white text-sm font-medium mb-4 transition-all uppercase">
+                
+                <button onclick="handleLogin()" 
+                    class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3.5 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
+                    <span>🔑 Nhập mã lớp</span>
+                </button>
+            </div>
+
+            <p class="text-xs text-slate-400 italic">Strong roots, bright shoots.</p>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH CHÍNH (SAU KHI ĐĂNG NHẬP - MẪU 2, 3, 4, 5) -->
+    <div id="main-screen" class="hidden flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6 space-y-6">
+        <!-- Thanh thông tin đầu trang -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                    🌱 Tiếng Anh
+                </span>
+                <span class="bg-amber-50 text-amber-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+                    🏆 Đợt 3
+                </span>
+                <span class="bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1.5 rounded-lg">
+                    📖 5/10 buổi
+                </span>
+            </div>
+            <button onclick="handleLogout()" class="text-xs text-slate-400 hover:text-rose-500 font-medium transition-colors">Đổi lớp / Thoát</button>
+        </div>
+
+        <!-- PHẦN 1: BÀI TẬP VỀ NHÀ (HOMEWORK) -->
+        <section class="space-y-4">
+            <div>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span>📝 Bài tập về nhà</span>
+                </h2>
+                <p class="text-xs text-slate-500">Bài tập giáo viên giao cho lớp.</p>
+            </div>
+
+            <!-- Thẻ bài tập buổi 4 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="bg-emerald-50 text-emerald-800 text-xs font-bold px-3 py-1 rounded-md">BUỔI 4</span>
+                    <span class="bg-rose-50 text-rose-600 text-xs font-semibold px-3 py-1 rounded-md flex items-center gap-1">
+                        📅 Hạn nộp: 25/9/2026
+                    </span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-slate-900">HOÀN THÀNH BÀI TẬP ĐỘNG TỪ KHUYẾT THIẾU DẠNG ĐOẠN VĂN</h3>
+                <div class="bg-slate-50 p-4 rounded-xl text-xs sm:text-sm text-slate-600 space-y-2 border border-slate-100">
+                    <p class="font-semibold text-slate-700">📌 NỘI DUNG BÀI TẬP</p>
+                    <p>1. Hoàn thành bài tập động từ khuyết thiếu.</p>
+                    <p>2. Trong lúc làm bài TRA NGAY NHỮNG TỪ VỰNG mà mình không biết (viết nghĩa vào vở KHÔNG ĐƯỢC VIẾT VÀO ĐỀ), buổi tới chữa bài cô sẽ bắt dịch, không dịch được tính là chưa làm BTVN.</p>
+                </div>
+                <div class="flex items-center justify-between pt-2">
+                    <span class="text-xs text-slate-400 font-medium">TREE ENGLISH • Buổi 4</span>
+                    <button onclick="openQuizModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-100 transition-all">
+                        Làm Bài Tập Ngay (+1 TP)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHẦN 2: ĐƯỜNG ĐUA TRÀ SỮA (TEA RACE) -->
+        <section class="bg-gradient-to-b from-amber-50/60 to-white p-5 sm:p-6 rounded-2xl border border-amber-100 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-base font-bold text-amber-900 flex items-center gap-2">
+                        🧋 Đường đua trà sữa
+                    </h2>
+                    <p class="text-xs text-amber-700/80">Mỗi Tea Point là một bước tiến. Cùng cả lớp chạy tới đích trà sữa!</p>
+                </div>
+                <div class="bg-white px-4 py-2 rounded-xl shadow-sm border border-amber-200 text-right">
+                    <div class="text-[10px] uppercase font-bold text-slate-400">Tea Points của bạn</div>
+                    <div id="tp-display" class="text-base font-extrabold text-amber-600">0/5 TP</div>
+                </div>
+            </div>
+
+            <!-- Bảng xếp hạng minh hoạ trên đường đua -->
+            <div class="bg-white/80 p-4 rounded-xl border border-amber-100/60 space-y-3">
+                <div class="text-xs font-semibold text-slate-700 flex justify-between items-center">
+                    <span>🏆 Dẫn đầu đường đua: <strong class="text-amber-600" id="leader-name">Thành Nhân</strong></span>
+                    <span class="text-[11px] text-slate-400">Đích: 5 Tea Points</span>
+                </div>
+                <!-- Thanh tiến trình minh hoạ -->
+                <div class="relative w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 40%"></div>
+                </div>
+                <div class="text-[11px] text-slate-500 flex justify-between">
+                    <span>Start (Bắt đầu)</span>
+                    <span>Đích Trà Sữa 🧋</span>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl border border-amber-100 text-xs text-slate-600 space-y-2">
+                <p class="font-bold text-amber-900">💡 Luật đường đua</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-slate-500">
+                    <div class="bg-amber-50/50 p-2 rounded-lg">⭐ Đạt từ 9 điểm: <strong>+1 Tea Point</strong></div>
+                    <div class="bg-amber-50/50 p-2 rounded-lg">🔥 Streak 7 ngày: <strong>+1 Tea Point</strong></div>
+                    <div class="bg-amber-50/50 p-2 rounded-lg">🏆 Đủ 5 Tea Points: <strong>Về đích!</strong></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHẦN 3: ÔN TẬP TỰ NGUYỆN (OPTIONAL PRACTICE) -->
+        <section class="space-y-4">
+            <div>
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span>📚 Ôn tập tự nguyện</span>
+                </h2>
+                <p class="text-xs text-slate-500">Không bắt buộc, nhưng luyện tập đều đặn sẽ giúp bạn tiến bộ nhanh hơn.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between space-y-3">
+                    <div>
+                        <div class="text-sm font-bold text-slate-900 mb-1">📖 Ôn tập từ vựng</div>
+                        <p class="text-xs text-slate-500">Luyện lại những từ vựng đã học trong lớp.</p>
+                    </div>
+                    <button disabled class="w-full bg-slate-100 text-slate-400 font-semibold py-2.5 rounded-xl text-xs cursor-not-allowed">Sắp ra mắt</button>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col justify-between space-y-3">
+                    <div>
+                        <div class="text-sm font-bold text-slate-900 mb-1">✏ Bài tập ngữ pháp</div>
+                        <p class="text-xs text-slate-500">Luyện thêm ngữ pháp nếu bạn muốn.</p>
+                    </div>
+                    <button disabled class="w-full bg-slate-100 text-slate-400 font-semibold py-2.5 rounded-xl text-xs cursor-not-allowed">Sắp ra mắt</button>
+                </div>
+            </div>
+
+            <!-- Daily Streak -->
+            <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center text-xl">🔥</div>
+                    <div>
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Daily Streak</div>
+                        <div class="text-sm font-bold text-slate-900">Chuỗi luyện tập đủ 7 ngày liên tiếp sẽ nhận +1 Tea Point.</div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-lg font-extrabold text-orange-500">0</span>
+                    <span class="text-xs text-slate-400 block">ngày liên tiếp</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- MODAL LÀM BÀI TẬP NHANH (MÔ PHỎNG NỘP BÀI TẬP BUỔI 4) -->
+    <div id="quiz-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-slate-900">Bài tập Buổi 4: Động từ khuyết thiếu</h3>
+                <button onclick="closeQuizModal()" class="text-slate-400 hover:text-slate-600 font-bold text-lg">&times;</button>
+            </div>
+            
+            <div class="space-y-3 text-sm">
+                <p class="font-semibold text-slate-700">Chọn đáp án đúng điền vào chỗ trống:</p>
+                <p class="text-xs text-slate-500">You _______ submit your homework before the deadline.</p>
+                
+                <div class="space-y-2">
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50">
+                        <input type="radio" name="q1" value="A" class="text-emerald-600"> A. must
+                    </label>
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50">
+                        <input type="radio" name="q1" value="B" class="text-emerald-600"> B. might
+                    </label>
+                    <label class="flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50">
+                        <input type="radio" name="q1" value="C" class="text-emerald-600"> C. could
+                    </label>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+                <button onclick="closeQuizModal()" class="px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-100 rounded-xl">Huỷ</button>
+                <button onclick="submitQuiz()" class="px-5 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-md">Nộp bài ngay</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-slate-400">
+        TREE ENGLISH &bull; Strong roots, bright shoots.
+    </footer>
+
+    <script>
+        // Kiểm tra trạng thái đăng nhập lưu trong trình duyệt
+        window.onload = function() {
+            const savedCode = localStorage.getItem('tree_english_class');
+            if (savedCode) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-screen').classList.remove('hidden');
+                updateTPDisplay();
+            }
+        }
+
+        function handleLogin() {
+            const codeInput = document.getElementById('class-code-input').value.trim();
+            if (codeInput === '') {
+                alert('Vui lòng nhập mã lớp do giáo viên cung cấp!');
+                return;
+            }
+            localStorage.setItem('tree_english_class', codeInput.toUpperCase());
+            if (!localStorage.getItem('tree_tp')) {
+                localStorage.setItem('tree_tp', '2'); // Mặc định mẫu có 2/5 TP
+            }
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('main-screen').classList.remove('hidden');
+            updateTPDisplay();
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('tree_english_class');
+            document.getElementById('main-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('class-code-input').value = '';
+        }
+
+        function openQuizModal() {
+            document.getElementById('quiz-modal').classList.remove('hidden');
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quiz-modal').classList.add('hidden');
+        }
+
+        function submitQuiz() {
+            const selected = document.querySelector('input[name="q1"]:checked');
+            if (!selected) {
+                alert('Vui lòng chọn đáp án trước khi nộp bài!');
+                return;
+            }
+
+            let currentTP = parseInt(localStorage.getItem('tree_tp') || '2');
+            if (selected.value === 'A') {
+                alert('Chính xác! Bạn đạt điểm tối đa và nhận thêm +1 Tea Point 🧋');
+                if (currentTP < 5) currentTP += 1;
+                localStorage.setItem('tree_tp', currentTP);
+            } else {
+                alert('Chưa chính xác lắm, đáp án đúng là "must". Hãy cố gắng lần sau nhé!');
+            }
+
+            closeQuizModal();
+            updateTPDisplay();
+        }
+
+        function updateTPDisplay() {
+            const tp = localStorage.getItem('tree_tp') || '2';
+            document.getElementById('tp-display').innerText = tp + '/5 TP';
+            const percent = (parseInt(tp) / 5) * 100;
+            document.getElementById('progress-bar').style.width = percent + '%';
+        }
+    </script>
+</body>
+</html>
